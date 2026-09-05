@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Karyotype AI</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Tahoma,sans-serif;background:#f4f7fb;color:#172033}
+header{background:#10233f;color:#fff;padding:16px 28px;display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:23px;font-weight:700}.logo span{color:#5eead4}
+.lang{background:#203958;border:1px solid #385273;color:#fff;padding:8px 14px;border-radius:8px;cursor:pointer}
+.layout{display:flex;min-height:calc(100vh - 68px)}aside{width:240px;background:#fff;border-left:1px solid #e2e8f0;padding:18px}
+nav button{display:block;width:100%;padding:13px;margin:6px 0;border:0;background:transparent;text-align:right;border-radius:9px;cursor:pointer;font-size:15px}
+nav button.active,nav button:hover{background:#e8f5f3;color:#087f72;font-weight:700}
+main{flex:1;padding:28px;max-width:1500px;margin:auto;width:100%}
+.page{display:none}.page.active{display:block}
+h1{margin-top:0}.muted{color:#64748b}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:20px;box-shadow:0 3px 12px #0f172a0a}
+.stat{font-size:30px;font-weight:700;margin-top:10px}
+.btn{border:0;border-radius:9px;padding:11px 16px;cursor:pointer;font-weight:700;background:#0f766e;color:#fff}
+.btn.secondary{background:#e8eef7;color:#172033}.btn.danger{background:#fee2e2;color:#991b1b}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
+.drop{border:2px dashed #94a3b8;border-radius:14px;padding:50px;text-align:center;background:#f8fafc}
+input,select{padding:11px;border:1px solid #cbd5e1;border-radius:8px;width:100%;margin:6px 0 12px}
+.viewer{min-height:330px;background:#111827;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#cbd5e1;position:relative;overflow:hidden}
+.fake-chromosomes{display:flex;gap:7px;align-items:center;transform:rotate(-4deg)}
+.ch{width:13px;background:#e5e7eb;border-radius:10px;position:relative;box-shadow:0 0 4px #fff8}
+.ch:nth-child(odd){height:150px}.ch:nth-child(even){height:120px}
+.ch:after{content:"";position:absolute;top:50%;left:0;right:0;height:5px;background:#6b7280}
+.karyo{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:15px}
+.pair{background:#f8fafc;border:1px solid #dbe3ed;border-radius:10px;padding:10px;text-align:center;min-height:125px}
+.pair strong{display:block;margin-bottom:6px}.pair .bars{display:flex;justify-content:center;gap:4px}.bar{width:10px;background:#334155;border-radius:8px}.bar.a{height:75px}.bar.b{height:62px}
+.badge{display:inline-block;padding:5px 9px;border-radius:20px;font-size:12px;font-weight:700}.normal{background:#dcfce7;color:#166534}.uncertain{background:#fef3c7;color:#92400e}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden}th,td{padding:11px;border-bottom:1px solid #e2e8f0;text-align:right}th{background:#f1f5f9}
+.alert{padding:13px;border-radius:9px;background:#fff7ed;color:#9a3412;margin:12px 0}
+footer{color:#64748b;text-align:center;padding:25px;font-size:12px}
+@media(max-width:900px){aside{width:190px}.grid{grid-template-columns:1fr}.karyo{grid-template-columns:repeat(3,1fr)}}@media(max-width:650px){.layout{display:block}aside{width:100%;border-left:0;border-bottom:1px solid #ddd}.karyo{grid-template-columns:repeat(2,1fr)}main{padding:16px}}
+</style>
+</head>
+<body>
+<header><div class="logo">Karyotype <span>AI</span></div><button class="lang" onclick="toggleLang()">العربية / English</button></header>
+<div class="layout">
+<aside><nav>
+<button class="active" onclick="show('home',this)">🏠 الرئيسية</button>
+<button onclick="show('case',this)">🧪 حالة جديدة</button>
+<button onclick="show('image',this)">🖼️ الصورة والتحليل</button>
+<button onclick="show('karyotype',this)">🧬 Karyotype</button>
+<button onclick="show('analysis',this)">🔬 التحليل</button>
+<button onclick="show('report',this)">📄 التقرير و ISCN</button>
+<button onclick="show('settings',this)">⚙️ الإعدادات</button>
+</nav></aside>
+<main>
+<section id="home" class="page active">
+<h1>نظام تحليل الكاريوتايب بالذكاء الاصطناعي</h1><p class="muted">نموذج واجهة أولي مبني على مواصفات المشروع.</p>
+<div class="grid">
+<div class="card"><div>الحالات</div><div class="stat">12</div><span class="muted">محفوظة</span></div>
+<div class="card"><div>قيد المراجعة</div><div class="stat">3</div><span class="muted">تحتاج مراجعة بشرية</span></div>
+<div class="card"><div>حالة النموذج</div><div class="stat">جاهز</div><span class="badge normal">Local AI</span></div>
+</div>
+<div class="card" style="margin-top:18px"><h2>بدء التحليل</h2><p>استورد صورة أو مجلد، أو التقط صورة من كاميرا المجهر المتوافقة.</p><div class="actions"><button class="btn" onclick="show('case',document.querySelectorAll('nav button')[1])">+ حالة جديدة</button><button class="btn secondary" onclick="show('image',document.querySelectorAll('nav button')[2])">استيراد صورة</button></div></div>
+<div class="alert">تنبيه: النظام مساعد للتحليل وليس بديلاً عن اختصاصي الوراثة الخلوية. النتائج غير المؤكدة يجب مراجعتها قبل اعتمادها.</div>
+</section>
+
+<section id="case" class="page"><h1>حالة جديدة</h1><div class="card">
+<label>رقم الحالة</label><input id="caseId" placeholder="CASE-2026-001">
+<label>اسم/رمز العينة</label><input placeholder="Sample ID">
+<label>الجنس المتوقع</label><select><option>غير محدد</option><option>XX</option><option>XY</option></select>
+<div class="actions"><button class="btn" onclick="show('image',document.querySelectorAll('nav button')[2])">حفظ وبدء التحليل</button></div>
+</div></section>
+
+<section id="image" class="page"><h1>إدخال الصورة وفحص الجودة</h1>
+<div class="actions"><button class="btn">📷 Camera Live</button><button class="btn secondary" onclick="document.getElementById('file').click()">🖼️ Import Image</button><button class="btn secondary">📁 Import Folder</button><input id="file" type="file" accept=".jpg,.jpeg,.png,.tif,.tiff" style="display:none" onchange="fileChosen(this)"></div>
+<div class="card"><div class="drop" id="drop">اسحب صورة الكاريوتايب هنا<br><small>JPG / JPEG / PNG / TIFF</small><div id="filename"></div></div></div>
+<div class="card" style="margin-top:18px"><h3>معاينة</h3><div class="viewer"><div class="fake-chromosomes"><i class="ch"></i><i class="ch"></i><i class="ch"></i><i class="ch"></i><i class="ch"></i><i class="ch"></i><i class="ch"></i><i class="ch"></i></div></div>
+<div class="actions"><button class="btn" onclick="show('karyotype',document.querySelectorAll('nav button')[3])">تشغيل Detection & Classification</button></div></div>
+</section>
+
+<section id="karyotype" class="page"><h1>Karyotype</h1><p class="muted">الترتيب المقترح مع إمكانية المراجعة اليدوية والسحب والإفلات في النسخة الكاملة.</p>
+<div class="card"><div class="karyo" id="karyo"></div><div class="actions"><button class="btn" onclick="show('analysis',document.querySelectorAll('nav button')[4])">متابعة التحليل</button><button class="btn secondary" onclick="alert('تم حفظ التعديل')">حفظ التعديل</button></div></div></section>
+
+<section id="analysis" class="page"><h1>نتيجة التحليل</h1>
+<div class="grid"><div class="card"><b>الحالة</b><h2><span class="badge uncertain">Uncertain</span></h2></div><div class="card"><b>Confidence</b><div class="stat">92%</div></div><div class="card"><b>العدد المقترح</b><div class="stat">46</div></div></div>
+<div class="card" style="margin-top:18px"><h3>الموجودات</h3><table><tr><th>Finding</th><th>Confidence</th><th>Review</th></tr><tr><td>لا يوجد خلل عددي واضح</td><td>92%</td><td>Required Review</td></tr><tr><td>تحليل بنيوي</td><td>68%</td><td>Uncertain</td></tr></table></div>
+<div class="alert">هذه نتيجة مساعدة وليست تشخيصًا نهائيًا. يجب اعتمادها من المختص.</div>
+</section>
+
+<section id="report" class="page"><h1>التقرير و ISCN</h1><div class="card"><h3>ISCN — اقتراح قابل للتعديل</h3><textarea style="width:100%;min-height:100px;padding:12px;border:1px solid #cbd5e1;border-radius:8px">46,XX</textarea>
+<div class="actions"><button class="btn" onclick="alert('تم حفظ التقرير')">حفظ التقرير</button><button class="btn secondary" onclick="alert('تصدير PDF جاهز في التطبيق الكامل')">PDF</button><button class="btn secondary">Word</button><button class="btn secondary">Excel</button></div></div>
+</section>
+
+<section id="settings" class="page"><h1>الإعدادات</h1><div class="grid"><div class="card"><h3>الكاميرا</h3><p>إعداد مصدر كاميرا المجهر.</p></div><div class="card"><h3>AI Model</h3><p>Version: Demo-1.0</p></div><div class="card"><h3>التخزين</h3><p>Local / SQLite في التطبيق الكامل.</p></div></div></section>
+<footer>Karyotype AI • Prototype • النتائج تتطلب مراجعة اختصاصي</footer>
+</main></div>
+<script>
+function show(id,btn){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));if(btn)btn.classList.add('active')}
+function fileChosen(el){document.getElementById('filename').textContent=el.files[0]?'تم اختيار: '+el.files[0].name:''}
+function toggleLang(){alert('نسخة الواجهة الإنجليزية الكاملة يمكن إضافتها في المرحلة التالية.')}
+const k=document.getElementById('karyo'); for(let i=1;i<=23;i++){let p=document.createElement('div');p.className='pair';p.innerHTML='<strong>'+(i<=22?i:'X/Y')+'</strong><div class="bars"><span class="bar a"></span><span class="bar b"></span></div>';k.appendChild(p)}
+</script>
+</body></html>
